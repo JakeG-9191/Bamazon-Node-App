@@ -1,0 +1,31 @@
+Application Requirements
+ - Must be able to tie into SQL for data persistence
+ - Must be able to take in orders from customers and show depleted stock based on orders
+ - May be able to build in resources to track product sales and provide summary of best performing departments 
+ - Must have MySQL and Inquirer requirements built into script and installed with npm package 
+
+==========================================
+#Customer Experience
+- create database called products
+- products table must take in the following
+    - item_id
+    - product_name
+    - department_name
+    - price 
+    - stock_quantity
+- populate with some intial data sets
+- node application must display all items, show ids, names, prices of products for sale
+- then prompt to show which item they want to buy via ID and how many units they want to buy of that ID
+- application then must check against DB to see if there is quantity, if not a message should be displayed, if so then update quantity and show total cost of purchase
+
+==========================================
+#Manager Experience 
+- Manager should be able to see menu with;
+    - products for sale
+        - should see item ID, names, prices and quantity
+    - low inventory alert
+        - list all items with less than 5 in stock
+    - add to inventory
+        - display prompt that will let manager add more of any item in store
+    - add new product
+        - should allow for a completely new product to be added
