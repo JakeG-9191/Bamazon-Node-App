@@ -10,7 +10,7 @@ var connection = mySql.createConnection({
 });
 
 function showInventory() {
-    console.log(`\nAs the Manager of Bamazon, you have the ability to view all the current statistics below...\n`);
+    console.log(`\nAs the Manager of Bamazon, you have the ability to engage in all the actions listed below...\n`);
     inquirer.prompt([
         {
             type: "list",
