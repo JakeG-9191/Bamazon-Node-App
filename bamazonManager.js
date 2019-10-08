@@ -46,7 +46,7 @@ function managerMode () {
         if (response.managerChoice === "Yes") {
             showInventory();
         } else {
-            console.log(`\nClock Out has been recorded`)
+            console.log(`\nClock Out has been recorded, thank you`)
             connection.end();
         }
     })
@@ -63,11 +63,43 @@ function products () {
 };
 
 function lowInventory () {
-
+    connection.query("SELECT item_ID FROM products GROUP BY stock HAVING MAX(stock) = 5", function (err, data){
+        if (err) throw err;
+        for (var i = 0; i < data.length; i++) {
+            console.log(`${data[i].product_name}`)
+        }
+        managerMode();
+    })
 };
 
 function addInvetory () {
-
+    inquirer.prompt([
+        {
+            type: "number",
+            message: "Which item would you like to add additional inventory to?\nA valid item ID should be provided: ",
+            name: "inventory"
+        },
+        {
+            type: "number",
+            message: "How much more inventory would you like to add of this product?\nA valid value should be provided: ",
+            name: "amountInventory"
+        }
+    ]).then(function(response){
+        connection.query("SELECT * FROM products WHERE item_id =?", [response.inventory], function (err, data){
+            if (err) throw err;
+            connection.query("UPDATE products SET ? WHERE ?",
+            [
+                {
+                    stock: data[0].stock + response.amountInventory
+                },
+                {
+                    item_id: response.inventory
+                }
+            ])
+            console.log(`\nYou were able to add ${response.amountInventory} of ${data[0].product_name} to the bamazon store!`);
+            managerMode();
+        })
+    })
 };
 
 function newProduct () {
