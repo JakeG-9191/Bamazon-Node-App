@@ -103,7 +103,42 @@ function addInvetory () {
 };
 
 function newProduct () {
-
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "What is the name of the product you would like to add to bamazon?",
+            name: "newName"
+        },
+        {
+            type: "input",
+            message: "Which Department does this product belong in?",
+            name: "newDept"
+        },
+        {
+            type: "number",
+            message: "What is the price for one unit of this product?",
+            name: "newPrice"
+        },
+        {
+            type: "number",
+            message: "How much inventory of this product will be added to the bamazon store?",
+            name: "newStock"
+        }
+    ]).then(function(response){
+        connection.query(
+            "INSERT INTO products SET ?",
+            {
+                product_name: response.newName,
+                department_name: response.newDept,
+                price: response.newPrice,
+                stock: response.newStock
+            }, function (err) {
+                if (err) throw err;
+                console.log(`\nCongratulations, you have successfully added a new product to the ever growing bamazon store!\n`)
+                managerMode();
+            }
+        )
+    })
 };
 
 connection.connect(function (err) {
