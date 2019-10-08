@@ -63,10 +63,11 @@ function products () {
 };
 
 function lowInventory () {
-    connection.query("SELECT item_ID FROM products GROUP BY stock HAVING MAX(stock) = 5", function (err, data){
+    connection.query("SELECT * FROM products WHERE stock < 5", function (err, data){
         if (err) throw err;
+        console.log(`\nThe following items have a low inventory (Less than 5 in stock)\nCorporate would recommend ordering inventory for these items soon!\n`)
         for (var i = 0; i < data.length; i++) {
-            console.log(`${data[i].product_name}`)
+            console.log(`Item Name: ${data[i].product_name}\nItem Quantity: ${data[i].stock}\n`)
         }
         managerMode();
     })
