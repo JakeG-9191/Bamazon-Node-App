@@ -19,6 +19,23 @@ function showInventory () {
     })
 };
 
+function shopAgain () {
+    inquirer.prompt([
+        {
+            type: "list",
+            message: "Would you like to see the current inventory and make another purchase?",
+            choices: ["Yes, I Would", "No, Thank You"],
+            name: "shopAgain"
+        }
+    ]).then(function(response){
+        if (response.shopAgain === "Yes, I Would") {
+            showInventory();
+        } else {
+            connection.end();
+        }
+    })
+}
+
 function shopper() {
     inquirer.prompt([
         {
@@ -45,7 +62,18 @@ function shopper() {
                 return false;
             }
         }
-    ])
+    ]).then(function(response){
+        connection.query("SELECT * FROM products WHERE item_id =?", [response.itemID], function (err, data){
+            if (err) throw err;
+            if (data[0].stock >= response.itemUnits) {
+                console.log (`\nYou were able to successfully purchase ${data[0].product_name}, and you have purchased ${response.itemUnits} units of this product\n`);
+                shopAgain();
+            } else if (data[0].stock < response.itemUnits) {
+                console.log (`\nApologies, there is currently not enough inventory of this product to fulfill your order\n`);
+                shopAgain();
+            }
+        })
+    })
 };
 
 connection.connect(function(err){
