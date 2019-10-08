@@ -23,6 +23,8 @@ The user is then prompted to answer about the item that they want to purchase, i
 If the user tries to buy an item but the stock is too low, they will be notified that thier purchase is not successful | ![Customer Low Inventory](/images/customerLowInventory.JPG)
 Once the user is done with all of thier shopping, they may select to leave the store| ![Customer End](/images/customerEnd.JPG)
 
+===================================================================
+
 Manager User Experience | Results
 ------------ | -------------
 Manager Entry, with prompts on which action to take | ![Manager Entry](/images/managerEntry.JPG)
