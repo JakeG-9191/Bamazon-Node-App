@@ -31,6 +31,7 @@ function shopAgain () {
         if (response.shopAgain === "Yes, I Would") {
             showInventory();
         } else {
+            console.log(`\nThank you for shopping with us today!`)
             connection.end();
         }
     })
