@@ -34,7 +34,7 @@ function shopAgain () {
             connection.end();
         }
     })
-}
+};
 
 function shopper() {
     inquirer.prompt([
@@ -66,7 +66,16 @@ function shopper() {
         connection.query("SELECT * FROM products WHERE item_id =?", [response.itemID], function (err, data){
             if (err) throw err;
             if (data[0].stock >= response.itemUnits) {
-                console.log (`\nYou were able to successfully purchase ${data[0].product_name}, and you have purchased ${response.itemUnits} units of this product\n`);
+                connection.query("UPDATE products SET ? WHERE ?",
+                [
+                    {
+                        stock: data[0].stock - response.itemUnits
+                    },
+                    {
+                        item_id: response.itemID
+                    }
+                ])
+                console.log (`\nYou were able to successfully purchase ${data[0].product_name}, and you have purchased ${response.itemUnits} units of this product.\nThis cost you $${data[0].price * response.itemUnits}\n`);
                 shopAgain();
             } else if (data[0].stock < response.itemUnits) {
                 console.log (`\nApologies, there is currently not enough inventory of this product to fulfill your order\n`);
