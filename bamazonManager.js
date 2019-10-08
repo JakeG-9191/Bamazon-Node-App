@@ -78,12 +78,26 @@ function addInvetory () {
         {
             type: "number",
             message: "Which item would you like to add additional inventory to?\nA valid item ID should be provided: ",
-            name: "inventory"
+            name: "inventory",
+            validate: function(value) {
+                if (isNaN(value) === false) {
+                    return true;
+                }
+                console.log(`\nMust enter a number for the item ID`)
+                return false;
+            }
         },
         {
             type: "number",
-            message: "How much more inventory would you like to add of this product?\nA valid value should be provided: ",
-            name: "amountInventory"
+            message: "How much more inventory would you like to add of this product?\nA valid figure should be provided: ",
+            name: "amountInventory",
+            validate: function(value) {
+                if (isNaN(value) === false) {
+                    return true;
+                }
+                console.log(`\nMust enter a number for amount of inventory to add!`)
+                return false;
+            }
         }
     ]).then(function(response){
         connection.query("SELECT * FROM products WHERE item_id =?", [response.inventory], function (err, data){
@@ -97,7 +111,7 @@ function addInvetory () {
                     item_id: response.inventory
                 }
             ])
-            console.log(`\nYou were able to add ${response.amountInventory} of ${data[0].product_name} to the bamazon store!`);
+            console.log(`\nYou were able to add ${response.amountInventory} of ${data[0].product_name} to the Bamazon store!`);
             managerMode();
         })
     })
@@ -107,7 +121,7 @@ function newProduct () {
     inquirer.prompt([
         {
             type: "input",
-            message: "What is the name of the product you would like to add to bamazon?",
+            message: "What is the name of the product you would like to add to Bamazon?",
             name: "newName"
         },
         {
@@ -118,12 +132,26 @@ function newProduct () {
         {
             type: "number",
             message: "What is the price for one unit of this product?",
-            name: "newPrice"
+            name: "newPrice",
+            validate: function(value) {
+                if (isNaN(value) === false) {
+                    return true;
+                }
+                console.log(`\nMust enter a number for the price of this new product!`)
+                return false;
+            }
         },
         {
             type: "number",
-            message: "How much inventory of this product will be added to the bamazon store?",
-            name: "newStock"
+            message: "How much inventory of this product will be added to the Bamazon store?",
+            name: "newStock",
+            validate: function(value) {
+                if (isNaN(value) === false) {
+                    return true;
+                }
+                console.log(`\nMust enter a number for amount of inventory to add for new product!`)
+                return false;
+            }
         }
     ]).then(function(response){
         connection.query(
@@ -135,7 +163,7 @@ function newProduct () {
                 stock: response.newStock
             }, function (err) {
                 if (err) throw err;
-                console.log(`\nCongratulations, you have successfully added a new product to the ever growing bamazon store!\n`)
+                console.log(`\nCongratulations, you have successfully added a new product to the ever growing Bamazon store!\n`)
                 managerMode();
             }
         )
@@ -144,6 +172,6 @@ function newProduct () {
 
 connection.connect(function (err) {
     if (err) throw err;
-    console.log(`Connected as ID ${connection.threadId}\n\nWelcome to the Manager Portal for Bamazon`);
+    console.log(`\nWelcome to the Manager Portal for Bamazon`);
     showInventory();
 });

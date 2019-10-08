@@ -88,6 +88,20 @@ function shopper() {
 
 connection.connect(function(err){
     if (err) throw err;
-    console.log(`Connected as ID ${connection.threadId}`);
-    showInventory();
+    console.log(`\nWelcome to the Customer Portal for Bamazon\n`);
+    inquirer.prompt([
+        {
+            type: "list",
+            message: "Would you like to shop with us today?",
+            choices: ["Yes I Would", "No, Thank You"],
+            name: "customerGo"
+        }
+    ]).then(function(response){
+        if (response.customerGo === "Yes I Would") {
+            showInventory();
+        } else {
+            console.log(`\nWe hope to see you another time!`)
+            connection.end();
+        }
+    })
 });
