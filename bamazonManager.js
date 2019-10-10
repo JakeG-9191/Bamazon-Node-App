@@ -1,3 +1,4 @@
+// Require mySql and inquirer to be installed to continue with use of application 
 var mySql = require("mysql");
 var inquirer = require("inquirer");
 
@@ -9,6 +10,7 @@ var connection = mySql.createConnection({
     database: "bamazon_db"
 });
 
+// Function that prompts user to select 1 of 4 options using inquirer
 function showInventory() {
     console.log(`\nAs the Manager of Bamazon, you have the ability to engage in all the actions listed below...\n`);
     inquirer.prompt([
@@ -34,6 +36,7 @@ function showInventory() {
     })
 };
 
+// Once one of the actions has been completed, manager has option to continue with more options to to end connection with database
 function managerMode () {
     inquirer.prompt([
         {
@@ -52,6 +55,7 @@ function managerMode () {
     })
 }
 
+// Function that shows a list of all products and subsequent data
 function products () {
     connection.query("SELECT * FROM products", function (err, data){
         if (err) throw err;
@@ -62,6 +66,7 @@ function products () {
     })
 };
 
+// Function that shows user what items have a stock of less than 5
 function lowInventory () {
     connection.query("SELECT * FROM products WHERE stock < 5", function (err, data){
         if (err) throw err;
@@ -73,6 +78,7 @@ function lowInventory () {
     })
 };
 
+// Function that offers user ability to update inventory if they feel it is too low or high, they can remove inventory by putting a negative value in the second inquirer prompt, though a valid ID is needed to choose a certain item
 function addInvetory () {
     inquirer.prompt([
         {
@@ -117,6 +123,7 @@ function addInvetory () {
     })
 };
 
+// Function that allows the user to add a completely new product to database, an item ID is generated behind the scenes in MySQL
 function newProduct () {
     inquirer.prompt([
         {
@@ -170,6 +177,7 @@ function newProduct () {
     })
 };
 
+// Shows initial connection was successful, then calls for the inventory to be displayed
 connection.connect(function (err) {
     if (err) throw err;
     console.log(`\nWelcome to the Manager Portal for Bamazon`);

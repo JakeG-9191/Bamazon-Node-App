@@ -1,6 +1,8 @@
+// Require mySql and inquirer to be installed to continue with use of application 
 var mySql = require("mysql");
 var inquirer = require("inquirer");
 
+// Create connection with SQL server
 var connection = mySql.createConnection({
     host: "localhost",
     port: 3306,
@@ -9,6 +11,7 @@ var connection = mySql.createConnection({
     database: "bamazon_db"
 });
 
+// Function that shows inventory to user, for loop through all products and calls shopper function
 function showInventory () {
     connection.query("SELECT * FROM products", function (err, data) {
         if (err) throw err;
@@ -19,6 +22,7 @@ function showInventory () {
     })
 };
 
+// Function that is called after purchase or notification that there is not enough inventory to meet request, asks user if they would like to cotinue shopping or if they woudl like to end the experience and cut the connection to database
 function shopAgain () {
     inquirer.prompt([
         {
@@ -37,6 +41,7 @@ function shopAgain () {
     })
 };
 
+// Function that asks user what they want to purchase, requires input of item ID and then quantity of that product, after user enters information, request is made to MySQL to make sure there is enough inventory to proceed with purchase 
 function shopper() {
     inquirer.prompt([
         {
@@ -86,6 +91,7 @@ function shopper() {
     })
 };
 
+// Shows inital connection and confirms that user wants to continue shopping 
 connection.connect(function(err){
     if (err) throw err;
     console.log(`\nWelcome to the Customer Portal for Bamazon\n`);
